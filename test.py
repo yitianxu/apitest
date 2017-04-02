@@ -1,8 +1,7 @@
-import os
-import unittest
-import flaskapi
-import requests
-import json
+from app import app 
+from flask import Flask
+from flask_testing import TestCase
+
 
 class TestFlaskApiUsingRequests(unittest.TestCase):
     def test_hello_world(self):
@@ -14,7 +13,7 @@ class TestFlaskApi(unittest.TestCase):
     def setUp(self):
         self.app = flaskapi.app.test_client()
 
-    def test_api_source(self):
+    def test_hello_world(self):
         response = self.app.get('/')
         self.assertEqual(json.loads(response.get_data()), {'hello': 'world'})
 
