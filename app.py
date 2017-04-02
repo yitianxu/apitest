@@ -1,7 +1,8 @@
 #!flask/bin/python
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask import request 
 
+import random
 
 app = Flask(__name__)
 
@@ -14,33 +15,26 @@ def not_found(error):
 def not_found(error):
     return make_response(jsonify( { 'error': 'Not found' } ), 404)
 
+@app.errorhandler(500)
+def not_found(error):
+    return make_response(jsonify( { 'error': 'bad query' } ), 500)
 
+# task list  
+# it can query for db  
 tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    }
+      {"name": "United Kingdom", "isoCode": "GB"}, 
+      {"name": "Ireland", "isoCode": "IE"}
 ]
 
+# destination list
+# it can query for db  
 tasks_2 = [
-    {
-        'id': 3,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 4,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
+      {"name": "Spain", "isoCode": "ES"}, 
+      {"name": "France", "isoCode": "FR"}
 ]
 
 
-
+# api interface to get country information 
 @app.route('/todo/api/v1.0/countries', methods=['GET'])
 def target(): 
     if 'target' in request.args:        
@@ -52,20 +46,17 @@ def target():
             return request.args['error enquries'] 
 
 
-
-@app.route('/todo/api/v1.0/hello', methods=['GET'])
-def api_hello():
-    if 'name' in request.args:
-        return 'Hello ' + request.args['name']
-    else:
-        return 'Hello John Doe' 
-
+# hello world testing 
+#@app.route('/todo/api/v1.0/hello', methods=['GET'])
+#def api_hello():
+#        return 'Hello world' 
 
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+    return 'default page: /todo/api/v1.0/countries?target=source or /todo/api/v1.0/countries?target=destination'
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host="0.0.0.0")
